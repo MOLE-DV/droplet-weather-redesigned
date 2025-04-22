@@ -1,4 +1,5 @@
 import { CloudIcon } from "../../assets/icons/weather/CloudIcon";
+import { useWeatherData } from "../../contexts/WeatherDataContext";
 import { WeatherForcastDay } from "./WeatherForcastDay";
 
 type props = {
@@ -7,6 +8,7 @@ type props = {
 };
 
 export const WeatherForcast = ({ date, className }: props) => {
+  const { weatherData } = useWeatherData();
   return (
     <div className={className}>
       {[1, 2, 3, 4, 5, 6].map((day) => (
@@ -16,8 +18,8 @@ export const WeatherForcast = ({ date, className }: props) => {
             dayOfWeek={new Date(
               date.getTime() + day * 24 * 60 * 60 * 1000
             ).toLocaleDateString("en-US", { weekday: "long" })}
-            high={Math.floor(Math.random() * 10) + 20}
-            low={Math.floor(Math.random() * 10) + 10}
+            high={weatherData ? weatherData.forecast[day - 1].high : 0}
+            low={weatherData ? weatherData.forecast[day - 1].low : 0}
             weatherIcon={<CloudIcon className="icon" />}
           />
           {day !== 6 && <div className="divider" key={day} />}

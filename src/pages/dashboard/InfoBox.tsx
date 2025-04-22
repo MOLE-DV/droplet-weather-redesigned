@@ -7,7 +7,7 @@ import { ThermometerIcon } from "../../assets/icons/weather/ThermometerIcon";
 
 interface InfoBoxProps {
   title: string;
-  content: string;
+  content: string | number;
   unit: string;
   iconName?: string;
 }
