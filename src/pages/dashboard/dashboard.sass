@@ -1,0 +1,399 @@
+@use '../../assets/variables'
+
+.dashboard-container
+    width: 100vw
+    height: 100vh
+    overflow: hidden
+
+    $menu_width_with_margins: calc(clamp(1rem, 2.5vh, 2.5rem) * 2 + 5rem)
+    $searchbar_width_with_margins: calc(clamp(.5rem, 2vh, 2rem) + 3rem)
+
+    padding-left: $menu_width_with_margins  
+    padding-top:  $searchbar_width_with_margins
+
+    .current-temperature-container
+        position: relative
+        width: fit-content
+
+        margin-left: calc(clamp(5rem, 20vw, 20vw) - $menu_width_with_margins)
+        margin-top: clamp(2rem, 15vh, 20rem)
+        float: left
+
+        display: flex
+        flex-direction: column
+        align-items: center
+        gap: 1vh
+
+        .top
+            height: variables.$big_text
+            display: flex
+            align-items: flex-end
+            .temperature
+                height: 100%
+                font-size: variables.$big_text
+                font-weight: bold
+                letter-spacing: 1rem
+                span
+                    font-size: calc(variables.$big_text / 3)
+            .icon
+                height: calc(variables.$big_text / 2.5)
+                width: calc(variables.$big_text / 2.5)
+
+                fill: white
+        .date
+            position: relative
+            font-size: variables.$small_text
+            background: variables.$light_gradient
+            background-clip: text
+            color: transparent
+
+    .weather-info-container
+        position: relative
+        width: fit-content
+
+        float: right
+        margin-right: clamp(2rem, 6vw, 6rem)
+
+        display: grid
+        grid-template: repeat(2, 1fr) / repeat(2, 1fr)
+        gap: clamp(1rem, 2vh, 2rem)
+
+        .weather-info-box
+
+            background: variables.$dark_gradient
+            border-radius: 1rem 
+
+            padding: clamp(1rem, 1.5vh, 1.5rem)
+            padding-bottom: clamp(2rem, 2.5vh, 2.5rem)
+
+            display: flex
+            flex-direction: column
+            gap: 2vh
+
+            & *
+                background: variables.$light_gradient !important
+                background-clip: text !important
+                color: transparent !important
+
+            .title
+                display: flex
+                align-items: center
+                gap: clamp(.25rem, .5vw, .5rem)
+
+                font-size: variables.$normal_text
+                .icon
+                    aspect-ratio: 1
+                    fill: url(#light-gradient)
+
+            .info
+                text-align: center
+                font-size: calc(variables.$big_text / 3)
+                font-weight: bold
+                span
+                    font-size: variables.$small_text
+
+    .weather-forcast-container
+        width: calc( 100vw - $menu_width_with_margins )
+
+        position: absolute
+        bottom: 2rem
+        padding-inline: clamp(1rem, 3vw, 3rem)
+        padding-bottom: .5rem
+
+        display: flex
+        justify-content: space-between
+        gap: 3rem
+
+        overflow-x: auto
+        user-select: none
+        .weather-forcast-day
+            display: flex
+            flex-direction: column
+            gap: 2.5rem
+
+            padding-bottom: clamp(3rem, 5vh, 5rem)
+            .day-name
+                color: white
+                font-size: variables.$normal_text
+
+                display: flex
+                align-items: center
+                gap: .25rem
+                .icon
+                    height: variables.$normal_text
+                    aspect-ratio: 1
+
+                    fill: white            
+
+            .day-temperature
+                display: flex
+                flex-direction: column
+
+                text-align: center
+
+                .high
+                    font-size: calc(variables.$normal_text * 2)
+
+                .low
+                    font-size: variables.$small_text
+                    color: variables.$grey_3
+        .divider
+            border-right: 1px solid white
+
+@media screen and ( max-width: 960px )
+    .dashboard-container
+        display: flex
+        flex-direction: column
+        align-items: center
+        justify-content: space-around
+        gap: 10vh
+
+        padding-inline: 0
+        padding-bottom: 2.5vh
+
+        overflow-y: auto
+           
+
+        & *
+            margin: 0 !important
+
+        .current-temperature-container
+            margin-top: 6vh !important
+
+        .weather-info-container
+            gap: clamp(.1rem, 1vw, 1rem)
+            
+        .weather-forcast-container
+            position: relative
+            bottom: 0
+
+            width: 80vw
+            padding-inline: 2rem
+
+            flex-shrink: 0
+
+@media screen and ( max-width: 500px )
+    .dashboard-container
+        gap: 6vh
+        .weather-info-container
+            width: 90vw
+            gap: clamp(.1rem, 2vw, 2rem)
+            .weather-info-box
+                padding: clamp(.25rem, 1.25vh, 1.5rem)
+                padding-bottom: clamp(1rem, 3.5vh, 3.5rem)
+
+
+                .title
+                    font-size: clamp(.75rem, 1.5vw, 1.5rem)
+                    gap: 0
+                    .icon
+                        height: calc(clamp(.75rem, 1.5vw, 1.5rem) * 1.25)
+                    letter-spacing: .1rem
+        .weather-forcast-container
+            padding-inline: 0
+            width: 90vw
+    
+    
+        
+    
+
+            
+// @keyframes fade-in
+//     0%
+//         opacity: 0 
+//         transform: translateY(-1rem) 
+//     100%
+//         opacity: 1 
+//         transform: translateY(0) 
+
+// @keyframes fade-out
+//     0%
+//         opacity: 1 
+//         transform: translateY(0) 
+//     100%
+//         opacity: 0
+//         transform: translateY(1rem)
+
+
+// .dashboard-container
+//     padding-left: 5rem
+//     width: 100vw
+//     height: 100vh
+
+// .current-temperature
+//     position: relative
+//     margin-left: calc(clamp(5rem, 20vw, 20vw) - 5rem)
+//     margin-top: clamp(10rem, 25vh, 25rem)
+//     display: flex
+//     flex-direction: column
+//     float: left
+//     .top
+//         display: flex
+//         align-items: flex-end
+//         .temperature
+//             font-size: clamp(6rem, 7vw, 7rem)
+//             letter-spacing: 1rem
+//             span
+//                 font-size: calc(clamp(6rem, 7vw, 7rem) / 3)
+//                 background: variables.$light_gradient
+//                 background-clip: text
+//                 color: transparent
+
+//     .date
+//         display: flex
+//         align-items: flex-end
+//         gap: clamp(.25rem ,.5vw, .5rem)        
+//         font-size: variables.$small_text
+//         color: variables.$grey_3
+
+//         & *
+//             color: variables.$grey_3
+
+
+//         &.fade-out
+//             animation: fade-out .5s forwards
+
+//         &.fade-in
+//             animation: fade-in .5s forwards
+
+                
+
+//     .icon
+//         transform: translateY(-1rem)
+//         fill: white
+//         $icon_size: clamp(2.25rem, 3.75vw, 3.75rem)
+//         height: $icon_size
+//         width: $icon_size
+
+// .weather-info-container
+//     position: relative
+//     float: right
+//     width: fit-content
+//     margin-right: clamp(2rem, 6vw, 6rem)
+//     margin-top: calc(clamp(.5rem, 2vh, 2rem) + 4.75rem)
+//     display: grid
+//     grid-template-columns: repeat(2, 1fr)
+//     gap: clamp(1rem, 2vh, 2rem)
+//     .weather-info-box
+//         position: relative
+//         border-radius: 1rem
+//         background: variables.$dark_gradient
+//         padding: clamp(1rem, 1.5vh, 1.5rem)
+//         padding-bottom: clamp(2rem, 2.5vh, 2.5rem)
+//         width: 15rem
+//         min-width: 10rem
+//         justify-self: center
+
+//         .title
+//             font-size: clamp(1.25rem, 1.5vw, max(1.5rem, 100%))
+//             margin-top: clamp(.5rem, 1vh, 1rem)
+//             margin-bottom: clamp(.5rem, 1vh, 1rem)
+//             display: flex
+//             align-items: center
+//             gap: clamp(.25rem, .5vw, .5rem)
+//             background: variables.$light_gradient
+//             background-clip: text
+//             color: transparent
+//             transform: translateY(-.75rem)
+
+//             .icon
+//                 fill: url(#light-gradient)
+//                 height: clamp(2rem, 3vh, 3rem)
+
+//         .info
+//            position: relative
+//            font-size: clamp(3rem, 3vw, 4rem)
+//            text-align: center
+//            background: variables.$light_gradient
+//            background-clip: text
+//            color: transparent
+//            span
+//                 font-size: calc(clamp(3rem, 3vw, 4rem) / 3)
+//                 background: variables.$light_gradient
+//                 background-clip: text
+//                 color: transparent
+//                 margin-left: .25rem
+
+// .weather-forcast-container
+//     position: absolute
+//     display: flex
+//     float: left
+//     margin-left: calc((clamp(1rem, 2.5vh, 2.5rem) * 2))
+//     width: calc(100vw - (clamp(1rem, 2.5vh, 2.5rem) * 2) - 5rem)
+//     height: 14rem 
+//     flex-shrink: 0 
+//     overflow-x: scroll
+//     overflow-y: hidden 
+//     bottom: 2rem
+//     padding-bottom: .5rem
+
+//     .weather-forcast-day
+//         display: flex
+//         flex-direction: column
+//         gap: 5vh
+//         width: 20rem
+//         flex-shrink: 0
+//         padding-bottom: clamp(3rem, 5vh, 5rem)
+
+
+//         &:not(&:nth-last-child(1))
+//             border-right: 1px solid white
+
+
+
+//         .day-name
+//             display: flex
+//             align-items: center
+//             justify-content: center
+//             gap: .25rem
+//             font-size: clamp(1.25rem, 1.5vw, 1.5rem)
+
+//         .icon
+//             fill: white
+//             height: clamp(1.25rem, 2vw, 2rem)
+//             aspect-ratio: 1
+
+//         .day-temperature
+//             display: flex
+//             flex-direction: column
+//             align-items: center
+//             .high
+//                 color: white
+//                 font-size: calc(clamp(1.25rem, 1.5vw, 1.5rem) * 2)
+
+//             .low
+//                 font-size: calc(clamp(1.25rem, 1.5vw, 1.5rem) * .9)
+//                 color: variables.$grey_3
+
+
+
+
+// @media screen and ( max-width: 960px )
+//     .dashboard-container
+//         display: flex
+//         align-items: center
+//         padding: 0 
+//         flex-direction: column
+//     .current-temperature
+//         margin: 0
+//         margin-top: 12vh
+//         position: relative
+//         height: 10rem
+//         background: aqua
+//     .weather-info-container
+//         background: blue
+//         margin: 0
+//         order: 2
+//         display: block
+//     .weather-forcast-container
+//         position: relative
+//         margin: 0
+//         background: red
+//         width: 100vw
+
+// @media screen and ( max-height: 650px) and ( min-width: 960px )
+//     .weather-forcast-container
+//         position: relative
+//         margin-top: 2rem
+//         bottom: 0
+

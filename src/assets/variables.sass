@@ -1,0 +1,48 @@
+$dark_1: #202020
+$dark_2: #1A1A1A
+$white_1: #FFFFFF
+$white_blue: #EBF3FF
+$grey_1: #303030
+$grey_2: #222222
+$grey_3: #B3B3B3
+$dark_gradient: linear-gradient(to top, $grey_2, $grey_1)
+$light_gradient: linear-gradient(to top, $grey_3, $white_1)
+
+$big_text: clamp(6rem, 9vw, 9rem)
+$small_text: calc($big_text / 8)
+$normal_text: calc($big_text / 6)
+
+@mixin unbuttonize()
+    outline: none
+    border: none
+    border-radius: 0
+    background: none
+    appearance: none
+    padding: 0
+    margin: 0 
+
+@mixin buttonHoverAnimation()
+    &:hover, &:focus
+        background: white
+        scale: 1.1
+
+        @keyframes spring 
+            0%
+                scale: .5
+
+        .icon
+            fill: url(#dark-gradient)
+            animation: .5s spring forwards
+
+@font-face 
+    font-family: Nugo
+    src: url('./fonts/Nugo.ttf')
+
+@font-face
+    font-family: Print
+    src: url('./fonts/PrintClearly.ttf')
+
+
+@font-face 
+    font-family: Inter
+    src: url('./fonts/Inter.ttf')

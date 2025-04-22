@@ -1,0 +1,80 @@
+@use '../../assets/variables'
+
+
+@property --angle
+    syntax: '<angle>'
+    initial-value: 0deg
+    inherits: true
+
+
+@keyframes rotateForwards
+    0%
+        --angle: 0deg
+    100%
+        --angle: 360deg
+
+@keyframes rotateBackwards
+    0%
+        --angle: 360deg
+    100%
+        --angle: 0deg        
+    
+.searchbar
+    position: fixed
+    left: clamp(5rem, 20vw, 20vw)
+    top: clamp(.5rem, 2vh, 2rem)
+    z-index: 999
+    padding-inline: clamp(1.5rem, 3vw, 2rem)
+    border-radius: 5rem
+    display: flex
+    gap: clamp(.5rem, 1.25vw, 2rem)
+    align-items: center
+    min-width: clamp(5rem, 15vw, 18rem)
+    transition: .1s
+    background: variables.$dark_gradient
+    height: 5rem
+
+    &:focus-within
+        min-width: clamp(5rem, 30vw, 30rem)
+
+    &:hover
+        scale: 1.05
+
+
+    .search-button
+        @include variables.unbuttonize()            
+            
+
+        .icon
+            height: 100%
+            width: 2rem
+            fill: url(#light-gradient)
+            cursor: pointer
+            transform: translateY(.25rem)
+    
+    input
+        background: none
+        color: white
+        font-size: 100%
+        border: none
+        outline: none
+        padding-top: clamp(1.5rem, 2.5vh, 2.5rem)
+        padding-bottom: clamp(1.5rem, 2.5vh, 2.5rem)
+        width: 100%
+        &::placeholder
+            color: #B3B3B3
+
+@media screen and ( max-width: 960px )
+    .searchbar
+        top: clamp(.5rem, 2.5vh, 5rem) 
+        left: clamp(.1rem, 5vw, 5rem)
+        padding-inline: clamp(1rem, 2.5vh, 2.5rem)
+        gap: clamp(.25rem, .5vw, .5rem)
+        min-width: 0
+        width: 80%
+        height: clamp(2.5rem, 5vh, 5rem)
+
+        .search-button
+            .icon
+                width: 1rem
+                

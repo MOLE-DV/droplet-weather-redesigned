@@ -1,0 +1,120 @@
+@use '../../assets/variables'
+    
+.dropdown-menu-button
+    display: none
+
+.menu
+    $margin: clamp(1rem, 2.5vh, 2.5rem)
+    $padding: clamp(1rem, 10vh, 10rem)
+
+    position: fixed
+    height: calc(100vh - ($margin * 2))
+    margin: $margin
+    background: variables.$dark_gradient
+    border-radius: 5rem
+    padding-top: $padding
+    padding-bottom: $padding
+    display: flex
+    flex-direction: column
+    gap: clamp(2rem, 5vh, 5rem)
+    width: 5rem
+
+
+    .menu-link 
+        $button_padding: .4rem
+
+        height: calc(clamp(.5rem, calc(1.75vh + 1.75vw), 3.5rem) + $button_padding)
+        aspect-ratio: 1
+        display: block
+        border-radius: 1rem
+        transition: .2s
+        padding: $button_padding
+        outline: none
+        .icon
+            height: 100%
+            width: 100%
+            fill: url(#light-gradient)
+            transition: .1s
+
+        &.info
+            position: absolute
+            left: 0
+            right: 0
+            margin: auto
+            bottom: $padding
+
+        @include variables.buttonHoverAnimation()
+        
+
+
+@media screen and ( max-width: 960px )
+    .menu
+        transform: translateX(125%)
+        transition: .1s
+        z-index: 999
+        right: 0
+        top: 5rem
+        border-radius: 1rem
+        padding-top: 2rem
+        padding-bottom: 2rem
+        padding-inline: .5rem
+        height: fit-content
+        width: 5rem
+        .menu-link
+            height: 2rem
+
+            &.info
+                position: relative
+                bottom: 0
+
+    .dropdown-menu-button
+        display: flex
+        position: absolute
+        right: clamp(.1rem, 5vw, 5rem)
+        top: calc(clamp(.5rem, 2.5vh, 5rem) + clamp(2.5rem, 5vh, 5rem) / 2 - 1.5rem / 2)
+        flex-direction: column
+        height: 1.5rem
+        aspect-ratio: 1.1 / 1
+        justify-content: space-between
+        
+        &::before, &::after, .center
+            @include variables.unbuttonize()
+            content: ''
+            width: 100%
+            height: calc((100% / 3) - (2 * 8%))
+            background: variables.$light_gradient
+            background-size: 100% 300%
+            z-index: 1
+            border-radius: 1rem
+            transition: .2s
+            transform-origin: 0
+
+        .center
+            background-position-y: 200%
+        &::after
+            background-position-y: 100%
+
+
+        &:has(.center:checked)
+
+            & ~ .menu
+                display: flex
+
+                transform: translateX(0%)
+            .center
+                width: 0
+                position: absolute
+                top: 0
+                bottom: 0
+                margin: auto
+            &::before
+                position: absolute
+                transform: rotate(37.25deg)
+                width: 2rem
+                background: white
+            &::after
+                position: absolute
+                bottom: 0
+                transform: rotate(-37.25deg)
+                width: 2rem
+                background: white
