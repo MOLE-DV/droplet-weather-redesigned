@@ -42,12 +42,22 @@
 
 
     .search-button
-        @include variables.unbuttonize()            
+        @include variables.unbuttonize()     
+        height: 2.25rem
+        aspect-ratio: 1
+        padding: .1rem
+        display: flex
+        border-radius: .25rem
+
+        &:focus
+            background: variables.$light_gradient
+            .icon
+                fill: url(#dark-gradient)
             
 
         .icon
-            height: 100%
-            width: 2rem
+            height: 80%
+            width: 100%
             fill: url(#light-gradient)
             cursor: pointer
             transform: translateY(.25rem)

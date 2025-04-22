@@ -3,6 +3,7 @@ import { LightGradient } from "./assets/LightGradient";
 import { Menu } from "./components/menu/Menu";
 import { SearchBar } from "./components/searchbar/SearchBar";
 import { Outlet } from "react-router-dom";
+import { WeatherDataProvider } from "./contexts/WeatherDataContext";
 
 export const Layout = () => (
   <>
@@ -10,6 +11,8 @@ export const Layout = () => (
     <DarkGradient />
     <Menu />
     <SearchBar />
-    <Outlet />
+    <WeatherDataProvider>
+      <Outlet />
+    </WeatherDataProvider>
   </>
 );
