@@ -1,6 +1,5 @@
 import React from "react";
 import { SunIcon } from "../../assets/icons/weather/SunIcon";
-import { CloudIcon } from "../../assets/icons/weather/CloudIcon";
 import { WindIcon } from "../../assets/icons/weather/WindIcon";
 import { DropletIcon } from "../../assets/icons/weather/DropletIcon";
 import { ThermometerIcon } from "../../assets/icons/weather/ThermometerIcon";
@@ -22,9 +21,6 @@ const InfoBox: React.FC<InfoBoxProps> = ({
   switch (iconName) {
     case "sun":
       icon = <SunIcon className="icon" />;
-      break;
-    case "cloud":
-      icon = <CloudIcon className="icon" />;
       break;
     case "wind":
       icon = <WindIcon className="icon" />;

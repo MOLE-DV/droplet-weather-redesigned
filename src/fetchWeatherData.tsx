@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { WeatherDataType } from "./types/weather_data";
 
 const api = axios.create({
@@ -32,7 +32,8 @@ export const fetchWeatherData = async (location: string) => {
           location: location,
         } as WeatherDataType;
       });
-  } catch (error) {
+  } catch (error: any) {
+    alert(`Failed to fetch weather information [ ${error.code} ]`);
     console.error(`Failed to fetch weather data: ${error}`);
   }
 };

@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
-import { CloudIcon } from "../../assets/icons/weather/CloudIcon";
 import "./dashboard.sass";
 import InfoBox from "./InfoBox";
 import { WeatherForcast } from "./WeatherForcast";
 import { useWeatherData } from "../../contexts/WeatherDataContext";
+import { WeatherIcon } from "../../assets/icons/weather/WeatherIcon";
 
 export const Dashboard = () => {
   const date = useRef(new Date());
@@ -35,9 +35,9 @@ export const Dashboard = () => {
     <div className="dashboard-container">
       <div className="current-temperature-container">
         <div className="top">
-          <CloudIcon className="icon" />
           <h1 className="temperature">
-            {weatherData ? weatherData.c_temp : 0}
+            <WeatherIcon name="rain" />
+            {weatherData ? Math.round(weatherData.c_temp) : 0}
             <span>&deg;C</span>
           </h1>
         </div>

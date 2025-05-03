@@ -1,4 +1,3 @@
-import { CloudIcon } from "../../assets/icons/weather/CloudIcon";
 import { useWeatherData } from "../../contexts/WeatherDataContext";
 import { WeatherForcastDay } from "./WeatherForcastDay";
 
@@ -21,7 +20,6 @@ export const WeatherForcast = ({ date, className }: props) => {
             ).toLocaleDateString("en-US", { weekday: "long" })}
             high={weatherData ? weatherData.forecast[i].tempmax : 0}
             low={weatherData ? weatherData.forecast[i].tempmin : 0}
-            weatherIcon={<CloudIcon className="icon" />}
           />
           {day !== 6 && <div className="divider" key={day} />}
         </>
