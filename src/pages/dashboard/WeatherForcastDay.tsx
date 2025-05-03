@@ -2,8 +2,8 @@ import { ReactElement } from "react";
 
 type props = {
   dayOfWeek: string;
-  high: number;
-  low: number;
+  high: number | string;
+  low: number | string;
   weatherIcon?: ReactElement;
 };
 

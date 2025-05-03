@@ -7,9 +7,10 @@ const api = axios.create({
 });
 
 export const fetchWeatherData = async (location: string) => {
-  const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
+  const apiKey = import.meta.env.VITE_API_KEY;
+
   try {
-    await api
+    return await api
       .get(
         `/${encodeURI(
           location
@@ -17,14 +18,16 @@ export const fetchWeatherData = async (location: string) => {
       )
       .then((res: any) => {
         if (res == null) return null;
+        console.log("res", res.data);
         return {
-          c_temp: res.currentConditions.temp,
-          c_feels_like: res.currentConditions.feelslike,
-          c_wind_speed: res.currentConditions.windspeed,
-          c_humidity: res.currentConditions.humidity,
-          c_uv_index: res.currentConditions.uvindex,
-          c_weather: res.currentConditions.conditions,
-          forecast: res.days,
+          c_temp: res.data.currentConditions.temp,
+          c_feels_like: res.data.currentConditions.feelslike,
+          c_wind_speed: res.data.currentConditions.windspeed,
+          c_humidity: res.data.currentConditions.humidity,
+          c_uv_index: res.data.currentConditions.uvindex,
+          c_weather: res.data.currentConditions.conditions,
+          c_icon: res.data.currentConditions.icon,
+          forecast: res.data.days.splice(1),
           last_update: new Date(),
           location: location,
         } as WeatherDataType;

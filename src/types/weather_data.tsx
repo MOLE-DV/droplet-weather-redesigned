@@ -5,12 +5,8 @@ export type WeatherDataType = {
   c_humidity: number;
   c_uv_index: number;
   c_weather: string;
-  forecast: Array<{
-    day: number;
-    high: number;
-    low: number;
-    weather: string;
-  }>;
+  c_icon: string;
+  forecast: Array<{ [key: string]: string | number }>;
   last_update: Date;
   location: string;
 };
