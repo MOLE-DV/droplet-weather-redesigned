@@ -4,15 +4,18 @@ import "./assets/main.sass";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Dashboard } from "./pages/dashboard/Dashboard";
 import { WeatherDataProvider } from "./contexts/WeatherDataContext";
+import { PopupContextProvider } from "./contexts/PopupContext";
 
 createRoot(document.getElementById("root")!).render(
-  <WeatherDataProvider>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Dashboard />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  </WeatherDataProvider>
+  <PopupContextProvider>
+    <WeatherDataProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Dashboard />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </WeatherDataProvider>
+  </PopupContextProvider>
 );

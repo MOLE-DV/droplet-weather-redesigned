@@ -34,11 +34,23 @@
     background: variables.$dark_gradient
     height: 5rem
 
-    &:focus-within
-        min-width: clamp(5rem, 30vw, 30rem)
+        
+    &:not(&:focus-within)
+        transition: .25s
+        transition-delay: .2s
+        border-radius: 5rem !important
+        .hints
+            transition: .2s
+            max-height: 0
+            
 
     &:hover
         scale: 1.05
+
+    &:has(.hints:not(.disabled))
+        border-radius: 1.5rem
+        border-bottom-right-radius: 0
+        border-bottom-left-radius: 0
 
 
     .search-button
@@ -73,7 +85,32 @@
         width: 100%
         &::placeholder
             color: #B3B3B3
+        
+    .hints
+        position: absolute
+        top: 100%
+        left: 0
+        width: 100%
+        background: variables.$grey_2
+        max-height: 15rem
+        transition: all .5s
+        overflow: auto
+        border-bottom-left-radius: 1rem
+        border-bottom-right-radius: 1rem
 
+        .hint
+            @include variables.unbuttonize()
+
+            padding-top: 1rem
+            padding-bottom: 1rem
+            padding-inline: 1rem
+
+            &:hover, &:focus-visible
+                background: variables.$light_gradient
+                color: black
+
+        &.disabled
+            max-height: 0
 @media screen and ( max-width: 960px )
     .searchbar
         top: clamp(.5rem, 2.5vh, 5rem) 

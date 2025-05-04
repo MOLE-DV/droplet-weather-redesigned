@@ -4,6 +4,7 @@ import InfoBox from "./InfoBox";
 import { WeatherForcast } from "./WeatherForcast";
 import { useWeatherData } from "../../contexts/WeatherDataContext";
 import { WeatherIcon } from "../../assets/icons/weather/WeatherIcon";
+import { LocationIcon } from "../../assets/icons/LocationIcon";
 
 export const Dashboard = () => {
   const date = useRef(new Date());
@@ -36,15 +37,24 @@ export const Dashboard = () => {
       <div className="current-temperature-container">
         <div className="top">
           <h1 className="temperature">
-            <WeatherIcon name="rain" />
+            <WeatherIcon
+              name={weatherData ? weatherData.c_icon : ""}
+              className="icon"
+            />
             {weatherData ? Math.round(weatherData.c_temp) : 0}
             <span>&deg;C</span>
           </h1>
         </div>
-        <div className="date" id="main-date">
-          {date.current.toLocaleDateString("en-US", { weekday: "long" })}{" "}
-          {date.current.getDate()}th of{" "}
-          {date.current.toLocaleDateString("en-US", { month: "long" })}
+        <div className="bottom" id="main-date">
+          <div className="date">
+            {date.current.toLocaleDateString("en-US", { weekday: "long" })}{" "}
+            {date.current.getDate()}th of{" "}
+            {date.current.toLocaleDateString("en-US", { month: "long" })}
+          </div>
+          <div className="location">
+            <LocationIcon className="icon" />
+            {weatherData ? weatherData.locationLabel : ""}
+          </div>
         </div>
       </div>
       <div className="weather-info-container">

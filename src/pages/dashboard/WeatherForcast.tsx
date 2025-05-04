@@ -1,3 +1,4 @@
+import { WeatherIcon } from "../../assets/icons/weather/WeatherIcon";
 import { useWeatherData } from "../../contexts/WeatherDataContext";
 import { WeatherForcastDay } from "./WeatherForcastDay";
 
@@ -20,6 +21,14 @@ export const WeatherForcast = ({ date, className }: props) => {
             ).toLocaleDateString("en-US", { weekday: "long" })}
             high={weatherData ? weatherData.forecast[i].tempmax : 0}
             low={weatherData ? weatherData.forecast[i].tempmin : 0}
+            weatherIcon={
+              <WeatherIcon
+                name={
+                  weatherData ? weatherData.forecast[i].icon.toString() : ""
+                }
+                className="icon"
+              />
+            }
           />
           {day !== 6 && <div className="divider" key={day} />}
         </>

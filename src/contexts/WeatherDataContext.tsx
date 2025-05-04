@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { WeatherDataType } from "../types/weather_data";
 import { fetchWeatherData } from "../fetchWeatherData";
+import { usePopupContext } from "./PopupContext";
 
 interface WeatherDataContextType {
   weatherData: WeatherDataType;
@@ -21,6 +22,7 @@ export const WeatherDataProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [weatherData, setWeatherData] = useState<any>(null);
+  const { setVisible } = usePopupContext();
 
   useEffect(() => {
     const getWeatherData = async () => {
@@ -43,14 +45,10 @@ export const WeatherDataProvider: React.FC<{ children: ReactNode }> = ({
           )
         : 0;
       console.log(`Last update of data: ${last_update} minutes ago`);
+      setVisible(true);
       if (!localWeatherData || last_update >= 60) {
         try {
-          console.log("Fetching weather data from API...");
-          const fetchedWeatherData = await fetchWeatherData(
-            "Proboszczowice 98-290"
-          );
-          console.log("fetched_weather_data: ", fetchedWeatherData);
-
+          const fetchedWeatherData = await fetchWeatherData("Warta 98-290", "Warta");
           localStorage.setItem(
             "weather_data",
             JSON.stringify(fetchedWeatherData)
@@ -64,6 +62,7 @@ export const WeatherDataProvider: React.FC<{ children: ReactNode }> = ({
         console.log("Using cached weather data...");
         setWeatherData(localWeatherData);
       }
+      setVisible(false);
     };
     getWeatherData();
   }, []);

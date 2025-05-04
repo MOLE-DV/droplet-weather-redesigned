@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { WeatherDataType } from "./types/weather_data";
 
 const api = axios.create({
@@ -6,19 +6,24 @@ const api = axios.create({
     "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline",
 });
 
-export const fetchWeatherData = async (location: string) => {
+export const fetchWeatherData = async (
+  location: string,
+  locationLabel: string
+) => {
   const apiKey = import.meta.env.VITE_API_KEY;
 
   try {
+    console.log(`Fetching weather data from API for location: ${location}.`);
+
     return await api
       .get(
         `/${encodeURI(
           location
-        )}?unitGroup=metric&key=${apiKey}&contentType=json`
+        )}?unitGroup=metric&key=${apiKey}&contentType=json&iconSet=icons2`
       )
       .then((res: any) => {
         if (res == null) return null;
-        console.log("res", res.data);
+        console.log("Succesfully fetched from API.");
         return {
           c_temp: res.data.currentConditions.temp,
           c_feels_like: res.data.currentConditions.feelslike,
@@ -30,6 +35,7 @@ export const fetchWeatherData = async (location: string) => {
           forecast: res.data.days.splice(1),
           last_update: new Date(),
           location: location,
+          locationLabel,
         } as WeatherDataType;
       });
   } catch (error: any) {

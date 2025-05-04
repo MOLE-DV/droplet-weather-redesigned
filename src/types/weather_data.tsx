@@ -9,4 +9,5 @@ export type WeatherDataType = {
   forecast: Array<{ [key: string]: string | number }>;
   last_update: Date;
   location: string;
+  locationLabel: string;
 };
