@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
+import { ChangeEvent, MouseEvent, useState } from "react";
 import { SearchIcon } from "../../assets/icons/SearchIcon";
 import "./searchbar.sass";
 import cities from "../../assets/json/cities.json";
@@ -8,14 +8,10 @@ import { useWeatherData } from "../../contexts/WeatherDataContext";
 import { WeatherDataType } from "../../types/weather_data";
 import { usePopupContext } from "../../contexts/PopupContext";
 
-interface countiresI {
-  [key: string]: string;
-}
-
 const findSimiliar = (input: string, limit: number) =>
   Object.values(cities)
     .filter(
-      (city_obj, i) =>
+      (city_obj) =>
         city_obj.name.toLowerCase().search(input.toLowerCase()) === 0
     )
     .reverse()
