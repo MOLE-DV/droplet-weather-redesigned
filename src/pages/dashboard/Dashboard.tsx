@@ -33,7 +33,7 @@ export const Dashboard = () => {
   }, []);
 
   return (
-    <div className="dashboard-container">
+    <div className="pages dashboard-container">
       <div className="current-temperature-container">
         <div className="top">
           <h1 className="temperature">

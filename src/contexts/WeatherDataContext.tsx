@@ -48,7 +48,12 @@ export const WeatherDataProvider: React.FC<{ children: ReactNode }> = ({
       setVisible(true);
       if (!localWeatherData || last_update >= 60) {
         try {
-          const fetchedWeatherData = await fetchWeatherData("Warta 98-290", "Warta");
+          const fetchedWeatherData = localWeatherData
+            ? await fetchWeatherData(
+                localWeatherData.location,
+                localWeatherData.locationLabel
+              )
+            : await fetchWeatherData("London", "London");
           localStorage.setItem(
             "weather_data",
             JSON.stringify(fetchedWeatherData)

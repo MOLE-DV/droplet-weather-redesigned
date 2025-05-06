@@ -12,6 +12,9 @@ $big_text: clamp(6rem, 9vw, 9rem)
 $small_text: calc($big_text / 8)
 $normal_text: calc($big_text / 6)
 
+$menu_width_with_margins: calc(clamp(1rem, 2.5vh, 2.5rem) + 5rem)
+$searchbar_width_with_margins: calc(clamp(.5rem, 2vh, 2rem) + 5rem)
+
 @mixin unbuttonize()
     outline: none
     border: none
@@ -20,20 +23,7 @@ $normal_text: calc($big_text / 6)
     appearance: none
     padding: 0
     margin: 0 
-
-@mixin buttonHoverAnimation()
-    &:hover, &:focus-visible
-        background: white
-        scale: 1.1
-
-        @keyframes spring 
-            0%
-                scale: .5
-
-        .icon
-            fill: url(#dark-gradient)
-            animation: .5s spring forwards
-
+    
 @font-face 
     font-family: Nugo
     src: url('./fonts/Nugo.ttf')

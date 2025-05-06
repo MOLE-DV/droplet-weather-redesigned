@@ -5,17 +5,11 @@
     height: 100vh
     overflow: hidden
 
-    $menu_width_with_margins: calc(clamp(1rem, 2.5vh, 2.5rem) * 2 + 5rem)
-    $searchbar_width_with_margins: calc(clamp(.5rem, 2vh, 2rem) + 3rem)
-
-    padding-left: $menu_width_with_margins  
-    padding-top:  $searchbar_width_with_margins
-
     .current-temperature-container
         position: relative
         width: fit-content
 
-        margin-left: calc(clamp(5rem, 20vw, 20vw) - $menu_width_with_margins)
+        margin-left: calc(clamp(5rem, 20vw, 20vw) - variables.$menu_width_with_margins)
         margin-top: clamp(2rem, 15vh, 20rem)
         float: left
 
@@ -101,7 +95,7 @@
                     font-size: variables.$small_text
 
     .weather-forcast-container
-        width: calc( 100vw - $menu_width_with_margins )
+        width: calc( 100vw - variables.$menu_width_with_margins )
 
         position: absolute
         bottom: 2rem
