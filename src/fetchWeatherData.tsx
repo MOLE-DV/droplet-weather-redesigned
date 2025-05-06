@@ -19,7 +19,7 @@ export const fetchWeatherData = async (
       .get(
         `/${encodeURI(
           location
-        )}?unitGroup=metric&key=${apiKey}&contentType=json&iconSet=icons2`
+        )}?unitGroup=metric&key=${apiKey}&contentType=json&iconSet=icons2&include=fcst%2Chours%2Ccurrent`
       )
       .then((res: any) => {
         if (res == null) return null;
@@ -32,7 +32,7 @@ export const fetchWeatherData = async (
           c_uv_index: res.data.currentConditions.uvindex,
           c_weather: res.data.currentConditions.conditions,
           c_icon: res.data.currentConditions.icon,
-          forecast: res.data.days.splice(1),
+          forecast: res.data.days,
           last_update: new Date(),
           location: location,
           locationLabel,
