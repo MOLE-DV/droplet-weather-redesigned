@@ -9,6 +9,9 @@ type props = {
 
 export const WeatherForcast = ({ date, className }: props) => {
   const { weatherData } = useWeatherData();
+  console.log(weatherData);
+  if (!weatherData || !weatherData.forecast || weatherData.forecast.length == 0)
+    return null;
   return (
     <div className={className}>
       {[1, 2, 3, 4, 5, 6].map((day, i) => (
@@ -18,8 +21,16 @@ export const WeatherForcast = ({ date, className }: props) => {
             dayOfWeek={new Date(
               date.getTime() + day * 24 * 60 * 60 * 1000
             ).toLocaleDateString("en-US", { weekday: "long" })}
-            high={weatherData ? weatherData.forecast[day].tempmax : 0}
-            low={weatherData ? weatherData.forecast[day].tempmin : 0}
+            high={
+              weatherData.forecast
+                ? Math.round(weatherData.forecast[day].tempmax as number)
+                : 0
+            }
+            low={
+              weatherData.forecast
+                ? Math.round(weatherData.forecast[day].tempmin as number)
+                : 0
+            }
             weatherIcon={
               <WeatherIcon
                 name={

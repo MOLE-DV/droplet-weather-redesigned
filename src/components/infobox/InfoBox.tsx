@@ -3,6 +3,7 @@ import { SunIcon } from "../../assets/icons/weather/SunIcon";
 import { WindIcon } from "../../assets/icons/weather/WindIcon";
 import { DropletIcon } from "../../assets/icons/weather/DropletIcon";
 import { ThermometerIcon } from "../../assets/icons/weather/ThermometerIcon";
+import "./infobox.sass";
 
 interface InfoBoxProps {
   title: string;

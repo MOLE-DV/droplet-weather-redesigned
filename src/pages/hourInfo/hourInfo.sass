@@ -1,4 +1,181 @@
-.chart-container
-    .hour-chart
+@use '../../assets/variables'
+    
+.hour-info-container
+    height: 100vh
+    position: relative
+
+    .hour-chart-container
+        float: left
+        position: relative
+        height: clamp(15rem, 50vh, 50rem)
+        margin-left: clamp(0rem, 2vw, 5rem)
+        overflow: visible
+        width: clamp(15rem, 70vw, 90rem)
+
+
+        .hour-chart
+            height: 100%
+            width: 100%
+            overflow: visible
+
+        .temp-indicator
+            position: absolute
+            left: 0
+            top: 0
+            height: 100%
+            width: 100%
+            z-index: 999
+            transition: .1s
+
+            &.hidden
+                opacity: 0
+
+    .day-picker
+        display: flex
+        flex-direction: column
+        padding-right: .6rem
+        margin-top: clamp(-5rem, -5vh, 0rem)
+        margin-right: clamp(0rem, 2vw, 5rem)
+        min-width: clamp(5rem, 20vw, 20rem)
+        height: calc(100vh - 5vh * 2)
+        overflow: auto
+        gap: clamp(.5rem, 1vh, 2rem)
+        float: right
+
+        .day-of-week
+            $day-of-week-vertical-padding: clamp(.5rem, 1vh, 2rem)
+            @include variables.unbuttonize()
+            
+            position: relative
+            transition: .5s background, .1s box-shadow
+            cursor: pointer
+            display: flex
+            flex-direction: column
+            padding-top: $day-of-week-vertical-padding
+            padding-bottom: calc($day-of-week-vertical-padding * 2.5)
+            background:  variables.$dark_gradient
+            border-radius: .5rem
+            gap: clamp(.5rem, 1.5vh, 2rem)
+
+            
+            &:hover, &:focus-visible
+               box-shadow: 0 0 10px rgba(255, 255, 255, .5)  inset
+ 
+
+            .day-title
+                display: flex
+                align-items: center
+                margin-left: clamp(.5rem, 1.5vw, 2rem)
+                font-size: variables.$normal_text
+                gap: clamp(.5rem, .5vw, 1rem)
+                z-index: 1
+
+            .day-temperatures
+                display: flex
+                justify-content: space-around
+                z-index: 1
+
+                .day-temperature
+                    z-index: 1
+                    font-size: calc(variables.$big_text / 3)
+                    
+                    .day-temperature-icon
+                        margin-right: .1rem
+
+                    .day-temperature-unit
+                        font-size: variables.$small_text
+
+            &.selected
+                background: white
+                & *
+                    color: black
+
+    .day-weather-info-container
+        float: left
+        display: flex
         width: 70vw
-        height: 50vh
+        margin-left: clamp(0rem, 2vw, 5rem)
+        margin-top: clamp(0rem, 5vh, 5rem)
+
+        justify-content: space-between
+
+        .weather-info-box
+            background: none
+
+
+
+@media screen and ( max-width: 1644px )
+    .hour-info-container
+        .day-picker
+            margin-right: 0
+            min-width: clamp(9rem, 18vw, 15rem)
+
+
+@media screen and ( max-width: 1070px )
+    .hour-info-container
+        .hour-chart-container
+            width: calc(100vw - variables.$menu_width_with_margins)
+            height: 40vh
+            margin-left: 0
+        .day-picker
+            float: left
+            margin: 0
+            margin-top: clamp(1rem, 3vh, 5rem)
+            margin-left: clamp(0rem, 2vw, 5rem)
+            padding: 0
+            padding-bottom: .6rem
+            flex-direction: row
+            height: fit-content
+            width: calc(100vw - variables.$menu_width_with_margins - clamp(0rem, 2vw, 5rem) * 2)
+            overflow-x: auto
+            overflow-y: hidden
+
+            .day-of-week
+                min-width: 15rem
+
+        .day-weather-info-container
+            margin: 0
+            margin-top: clamp(0rem, 5vh, 5rem)
+            width: calc(100vw - variables.$menu_width_with_margins - clamp(0rem, 2vw, 5rem) * 2)
+
+
+@media screen and ( max-width: 960px )
+    .hour-info-container
+        display: flex
+        flex-direction: column
+        justify-content: space-around
+        padding-inline: clamp(0rem, 2vw, 5rem)
+        gap: clamp(1rem, 3vh, 5rem)
+        $mobile-components-width: calc(100vw - clamp(0rem, 2vw, 5rem) * 2)
+
+        .hour-chart-container
+            width: $mobile-components-width
+            min-height: 10rem
+            margin: 0
+
+        .day-picker
+            width: $mobile-components-width
+            margin: 0
+            flex-shrink: 0
+
+        .day-weather-info-container
+            width: $mobile-components-width
+            margin: 0
+
+
+@media screen and ( max-width: 650px )
+    .hour-info-container
+        .hour-chart-container
+            overflow-x: auto
+            overflow-y: hidden
+            padding-bottom: .6rem
+            .hour-chart, .temp-indicator
+                width: 50rem
+        .day-weather-info-container
+            display: grid
+            grid-template-columns: repeat(2, 1fr)
+            justify-items: center
+
+            .weather-info-box
+                max-width: 1fr
+    

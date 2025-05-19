@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import "./dashboard.sass";
-import InfoBox from "./InfoBox";
+import InfoBox from "../../components/infobox/InfoBox";
 import { WeatherForcast } from "./WeatherForcast";
 import { useWeatherData } from "../../contexts/WeatherDataContext";
 import { WeatherIcon } from "../../assets/icons/weather/WeatherIcon";
