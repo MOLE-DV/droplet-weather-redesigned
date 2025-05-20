@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useWeatherData } from "../../contexts/WeatherDataContext";
 import { clamp } from "../../math/clamp";
+import arrow_left from "../../assets/icons/arrow-left.svg";
 
 //config for canvas padding, text offset and font size
 
@@ -32,8 +33,6 @@ export const Graph = ({ day = 0 }: { day?: number }) => {
       ".hour-chart"
     ) as HTMLCanvasElement;
 
-    pageX += canvasElement.offsetLeft;
-
     const indicator = document.querySelector(
       ".temp-indicator"
     ) as HTMLCanvasElement;
@@ -43,9 +42,11 @@ export const Graph = ({ day = 0 }: { day?: number }) => {
       !canvasElement ||
       !indicatorCtx ||
       !indicator ||
-      (indicator && indicator.classList[1] === "hidden")
+      (indicator && indicator.classList[1] === "hidden") ||
+      !weatherData
     )
       return;
+    pageX += canvasElement.offsetLeft;
 
     const canvasWith = canvasElement.width - config.canvasPadding * 2;
     const canvasHeight = canvasElement.height;
@@ -245,8 +246,6 @@ export const Graph = ({ day = 0 }: { day?: number }) => {
     if (!isMobile) {
       addEventListener("mousemove", (e) => handleChartMouseMove(e.pageX));
     } else {
-      //FIXME: this is a workaround for mobile devices, where the touchmove event doesn't work as expected
-      console.log("isMobile");
       addEventListener("touchmove", (e) =>
         handleChartMouseMove(e.touches[0].pageX)
       );
@@ -269,7 +268,17 @@ export const Graph = ({ day = 0 }: { day?: number }) => {
       className="hour-chart-container"
       onMouseEnter={() => setIndicatorVisiblility("visible")}
       onMouseLeave={() => setIndicatorVisiblility("hidden")}
+      onTouchStart={() => setIndicatorVisiblility("visible")}
+      onTouchEnd={() => setIndicatorVisiblility("hidden")}
     >
+      <div className="scroll-buttons-wrapper">
+        <button className={`scroll-left`}>
+          <img src={arrow_left} />
+        </button>
+        <button className={`scroll-right`}>
+          <img src={arrow_left} />
+        </button>
+      </div>
       <canvas className={`temp-indicator ${indicatorVisiblility}`}></canvas>
       <canvas className="hour-chart"></canvas>
     </div>
