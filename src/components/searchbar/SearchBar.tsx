@@ -1,7 +1,6 @@
 import { ChangeEvent, MouseEvent, useState } from "react";
 import { SearchIcon } from "../../assets/icons/SearchIcon";
 import "./searchbar.sass";
-import cities from "../../assets/json/cities.json";
 import countries from "../../assets/json/countries.json";
 import { fetchWeatherData } from "../../fetchWeatherData";
 import { useWeatherData } from "../../contexts/WeatherDataContext";
