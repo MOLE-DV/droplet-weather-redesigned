@@ -7,19 +7,13 @@ import { fetchWeatherData } from "../../fetchWeatherData";
 import { useWeatherData } from "../../contexts/WeatherDataContext";
 import { WeatherDataType } from "../../types/weather_data";
 import { usePopupContext } from "../../contexts/PopupContext";
-
-const findSimiliar = (input: string, limit: number) =>
-  Object.values(cities)
-    .filter(
-      (city_obj) =>
-        city_obj.name.toLowerCase().search(input.toLowerCase()) === 0
-    )
-    .reverse()
-    .slice(0, limit);
+import useSettingsContext from "../../contexts/SettingsContext";
+import { findSimiliarCities } from "../../findSimiliarCities";
 
 export const SearchBar = () => {
   const { setWeatherData } = useWeatherData();
   const { setVisible } = usePopupContext();
+  const { unitType } = useSettingsContext();
   const [searchResults, setSearchResults] = useState<
     { name: string; lat: string; lng: string; country: string }[] | null
   >(null);
@@ -29,7 +23,7 @@ export const SearchBar = () => {
     setSearchResults(
       inputElement.value.length == 0
         ? null
-        : findSimiliar(inputElement.value, 10)
+        : findSimiliarCities(inputElement.value, 10)
     );
   };
 
@@ -45,7 +39,8 @@ export const SearchBar = () => {
     setVisible(true);
     const fetchedWeatherData = (await fetchWeatherData(
       `${city_obj.lat},${city_obj.lng}`,
-      hintElement.innerText
+      hintElement.innerText,
+      unitType
     )) as WeatherDataType;
 
     if (!fetchWeatherData) return;

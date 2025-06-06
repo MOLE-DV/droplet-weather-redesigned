@@ -8,6 +8,7 @@ import React, {
 import { WeatherDataType } from "../types/weather_data";
 import { fetchWeatherData } from "../fetchWeatherData";
 import { usePopupContext } from "./PopupContext";
+import useSettingsContext from "./SettingsContext";
 
 interface WeatherDataContextType {
   weatherData: WeatherDataType;
@@ -23,6 +24,7 @@ export const WeatherDataProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [weatherData, setWeatherData] = useState<any>(null);
   const { setVisible } = usePopupContext();
+  const { unitType, defaultLocation } = useSettingsContext();
 
   useEffect(() => {
     const getWeatherData = async () => {
@@ -48,12 +50,11 @@ export const WeatherDataProvider: React.FC<{ children: ReactNode }> = ({
       setVisible(true);
       if (!localWeatherData || last_update >= 60) {
         try {
-          const fetchedWeatherData = localWeatherData
-            ? await fetchWeatherData(
-                localWeatherData.location,
-                localWeatherData.locationLabel
-              )
-            : await fetchWeatherData("London", "London");
+          const fetchedWeatherData = await fetchWeatherData(
+            defaultLocation,
+            defaultLocation,
+            unitType
+          );
           localStorage.setItem(
             "weather_data",
             JSON.stringify(fetchedWeatherData)

@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 import "./menu.sass";
 import { DashboardIcon } from "../../assets/icons/DashboardIcon";
 import { ChartIcon } from "../../assets/icons/ChartIcon";
-import { CalendarIcon } from "../../assets/icons/CalendarIcon";
 import { InfoIcon } from "../../assets/icons/InfoIcon";
+import { CogIcon } from "../../assets/icons/CogIcon";
 
 export const Menu = () => {
   return (
@@ -19,8 +19,8 @@ export const Menu = () => {
         <Link to={"/hourInfo"} className="menu-link">
           <ChartIcon className="icon" />
         </Link>
-        <Link to={"/"} className="menu-link">
-          <CalendarIcon className="icon" />
+        <Link to={"/settings"} className="menu-link">
+          <CogIcon className="icon" />
         </Link>
         <Link to={"/"} className="menu-link info">
           <InfoIcon className="icon" />

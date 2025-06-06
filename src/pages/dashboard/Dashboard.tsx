@@ -5,11 +5,13 @@ import { WeatherForcast } from "./WeatherForcast";
 import { useWeatherData } from "../../contexts/WeatherDataContext";
 import { WeatherIcon } from "../../assets/icons/weather/WeatherIcon";
 import { LocationIcon } from "../../assets/icons/LocationIcon";
+import useSettingsContext from "../../contexts/SettingsContext";
 
 export const Dashboard = () => {
   const date = useRef(new Date());
   date.current.setHours(0, 0, 0, 0);
   const { weatherData } = useWeatherData();
+  const { unitType } = useSettingsContext();
 
   useEffect(() => {
     const dateContainer = document.getElementById("main-date");
@@ -42,7 +44,7 @@ export const Dashboard = () => {
               className="icon"
             />
             {weatherData ? Math.round(weatherData.c_temp) : 0}
-            <span>&deg;C</span>
+            <span>{unitType == "us" ? <>&deg;F</> : <>&deg;C</>}</span>
           </h1>
         </div>
         <div className="bottom" id="main-date">
@@ -61,7 +63,7 @@ export const Dashboard = () => {
         <InfoBox
           title="Wind speed"
           content={weatherData ? weatherData.c_wind_speed : 0}
-          unit="km/h"
+          unit={unitType == "metric" ? "km/h" : "mph"}
           iconName="wind"
         />
         <InfoBox
@@ -73,7 +75,7 @@ export const Dashboard = () => {
         <InfoBox
           title="Feels like"
           content={weatherData ? weatherData.c_feels_like : 0}
-          unit="&deg;C"
+          unit={unitType == "us" ? "°F" : "°C"}
           iconName="thermometer"
         />
         <InfoBox

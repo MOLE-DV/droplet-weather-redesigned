@@ -9,7 +9,6 @@ type props = {
 
 export const WeatherForcast = ({ date, className }: props) => {
   const { weatherData } = useWeatherData();
-  console.log(weatherData);
   if (!weatherData || !weatherData.forecast || weatherData.forecast.length == 0)
     return null;
   return (

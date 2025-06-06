@@ -6,18 +6,23 @@ import { Dashboard } from "./pages/dashboard/Dashboard";
 import { WeatherDataProvider } from "./contexts/WeatherDataContext";
 import { PopupContextProvider } from "./contexts/PopupContext";
 import { HourInfo } from "./pages/hourInfo/HourInfo";
+import { Settings } from "./pages/settings/Settings";
+import { SettingsProvider } from "./contexts/SettingsContext";
 
 createRoot(document.getElementById("root")!).render(
-  <PopupContextProvider>
-    <WeatherDataProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="/hourInfo" element={<HourInfo />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </WeatherDataProvider>
-  </PopupContextProvider>
+  <SettingsProvider>
+    <PopupContextProvider>
+      <WeatherDataProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="/hourInfo" element={<HourInfo />} />
+              <Route path="/settings" element={<Settings />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </WeatherDataProvider>
+    </PopupContextProvider>
+  </SettingsProvider>
 );

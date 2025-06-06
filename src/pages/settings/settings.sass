@@ -1,0 +1,58 @@
+@use '../../assets/variables'
+    
+.settings
+    display: flex
+    flex-direction: column
+
+    & *
+        width: fit-content
+
+    .options
+        display: flex
+        flex-direction: column
+        align-items: center
+        margin-left: clamp(1rem, 2vw, 2rem)
+        width: fit-content
+        .option
+            display: flex
+            width: 100%
+            border-bottom: .1rem solid white
+            padding-top: clamp(.5rem, 2vh, 2rem)
+            padding-bottom: clamp(.5rem, 2vh, 2rem)
+
+            &.select
+                gap: 3rem
+            &.input
+                flex-direction: column
+                .defaultLocationInput
+                    @include variables.unbuttonize()
+
+                    margin-top: .5rem
+                    font-size: variables.$small_text
+                    
+                .cityNames
+                    margin-top: .5vh
+                    display: flex
+                    flex-direction: column
+                    gap: .5vh
+                    .cityName
+                        @include variables.unbuttonize()
+                        font-size: variables.$small_text
+                        cursor: pointer
+                    
+            .title
+                color: white
+                display: flex
+                align-items: center
+                gap: clamp(.5rem, .5vw, 1rem)
+                font-size: variables.$normal_text
+
+                .icon
+                    height: variables.$normal_text
+                    aspect-ratio: 1
+            .icon
+                fill: url(#light-gradient)
+
+        .save
+            margin-top: clamp(.5rem, 2vh, 2rem)
+            color: black

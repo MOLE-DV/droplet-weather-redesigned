@@ -4,6 +4,7 @@ import { WindIcon } from "../../assets/icons/weather/WindIcon";
 import { DropletIcon } from "../../assets/icons/weather/DropletIcon";
 import { ThermometerIcon } from "../../assets/icons/weather/ThermometerIcon";
 import "./infobox.sass";
+import { WeatherIcon } from "../../assets/icons/weather/WeatherIcon";
 
 interface InfoBoxProps {
   title: string;
@@ -32,6 +33,8 @@ const InfoBox: React.FC<InfoBoxProps> = ({
     case "thermometer":
       icon = <ThermometerIcon className="icon" />;
       break;
+    case "cloud":
+      icon = <WeatherIcon name="cloudy" />;
   }
   return (
     <div className="weather-info-box">

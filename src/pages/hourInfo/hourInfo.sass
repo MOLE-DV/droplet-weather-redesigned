@@ -12,7 +12,6 @@
         margin-left: clamp(0rem, 2vw, 5rem)
         overflow: visible
         width: clamp(15rem, 70vw, 90rem)
-        touch-action: none
 
 
         .hour-chart
@@ -75,6 +74,10 @@
                 gap: clamp(.5rem, .5vw, 1rem)
                 z-index: 1
 
+                span
+                    font-size: calc(variables.$normal_text / 1.7)
+                    color: variables.$grey_3
+
             .day-temperatures
                 display: flex
                 justify-content: space-around
@@ -95,6 +98,9 @@
                 & *
                     color: black
 
+                .day-title span
+                    color: black
+
     .day-weather-info-container
         float: left
         display: flex
@@ -109,14 +115,9 @@
 
 
 
-@media screen and ( max-width: 1644px )
-    .hour-info-container
-        .day-picker
-            margin-right: 0
-            min-width: clamp(9rem, 18vw, 15rem)
 
 
-@media screen and ( max-width: 1070px )
+@media screen and ( max-width: 1650px )
     .hour-info-container
         .hour-chart-container
             width: calc(100vw - variables.$menu_width_with_margins)
@@ -169,17 +170,16 @@
             margin: 0
 
 
-@media screen and ( max-width: 650px )
+@media screen and ( max-width: 800px )
     .hour-info-container
         .hour-chart-container
             position: relative
             overflow-x: scroll
             overflow-y: hidden
             padding-bottom: .6rem
-            background: blue
 
             .hour-chart, .temp-indicator
-                width: 50rem
+                width: 500vw
 
             .scroll-buttons-wrapper
                 display: flex
@@ -207,4 +207,7 @@
 
             .weather-info-box
                 max-width: 1fr
+
+                &:nth-child(3) .info
+                    font-size: variables.$normal_text
     

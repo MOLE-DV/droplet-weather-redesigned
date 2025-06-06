@@ -1,32 +1,45 @@
 import { useEffect, useRef, useState } from "react";
 import { useWeatherData } from "../../contexts/WeatherDataContext";
 import { clamp } from "../../math/clamp";
-import arrow_left from "../../assets/icons/arrow-left.svg";
+import weatherIconsSVG from "../../assets/icons/weather/svg/getWeatherIconSVG";
 
-//config for canvas padding, text offset and font size
+//config current.for canvas padding, text offset and font size
 
-const isMobile = window.innerHeight < 800 || window.innerWidth < 1000;
-const config = {
-  canvasPadding: isMobile ? 20 : 100,
-  textBottomOffset: isMobile ? 10 : 20,
-  fontTemp: {
-    size: isMobile ? 15 : 16.5,
-    name: "Inter, Arial, Helvetica, sans-serif",
-    color: "white",
-  },
-  fontHour: {
-    size: isMobile ? 12.5 : 14,
-    name: "Inter, Arial, Helvetica, sans-serif",
-    color: "rgb(182, 182, 182)",
-  },
+const getDiviceType = () =>
+  window.innerHeight < 500 || window.innerWidth < 800 ? "mobile" : "pc";
+
+const getConfig = () => {
+  const isMobile = getDiviceType() == "mobile";
+  return {
+    canvasPadding: 100,
+    textBottomOffset: isMobile ? 30 : 20,
+    fontTemp: {
+      size: isMobile ? 50 : 16.5,
+      name: "Inter, Arial, Helvetica, sans-serif",
+      color: "white",
+    },
+    fontHour: {
+      size: isMobile ? 30 : 14,
+      name: "Inter, Arial, Helvetica, sans-serif",
+      color: "rgb(182, 182, 182)",
+    },
+    weahterIconGap: 5,
+    tempDisplayFreq: isMobile ? 1 : 3,
+    tempDisplayWeatherIconSize: isMobile ? 50 : 20,
+    tempChartDotSize: isMobile ? 10 : 5,
+    tempIndicatorDotSize: 5,
+  };
 };
 
 export const Graph = ({ day = 0 }: { day?: number }) => {
   const { weatherData } = useWeatherData();
-  const chartPoints = useRef<{ x: number; y: number; temp: number }[]>([]);
+  const chartPoints = useRef<
+    { x: number; y: number; temp: number; icon: string }[]
+  >([]);
   const [indicatorVisiblility, setIndicatorVisiblility] = useState<
     "visible" | "hidden"
   >("hidden");
+  const config = useRef(getConfig());
 
   const handleChartMouseMove = (pageX: number) => {
     const canvasElement = document.querySelector(
@@ -48,14 +61,14 @@ export const Graph = ({ day = 0 }: { day?: number }) => {
       return;
     pageX += canvasElement.offsetLeft;
 
-    const canvasWith = canvasElement.width - config.canvasPadding * 2;
+    const canvasWith = canvasElement.width - config.current.canvasPadding * 2;
     const canvasHeight = canvasElement.height;
 
     const mousePosX = clamp(
       pageX * window.devicePixelRatio -
         canvasElement.getBoundingClientRect().left * window.devicePixelRatio,
-      config.canvasPadding,
-      canvasWith + config.canvasPadding
+      config.current.canvasPadding,
+      canvasWith + config.current.canvasPadding
     );
 
     const closestPoint = chartPoints.current
@@ -96,7 +109,8 @@ export const Graph = ({ day = 0 }: { day?: number }) => {
     );
 
     const hoveredHour =
-      ((mousePosX - config.canvasPadding) / canvasWith) * (hours.length - 1) +
+      ((mousePosX - config.current.canvasPadding) / canvasWith) *
+        (hours.length - 1) +
       parseInt(hours[0].datetime.split(":")[0]);
     //calculates hovered hour based on mouse position
 
@@ -114,14 +128,20 @@ export const Graph = ({ day = 0 }: { day?: number }) => {
 
     indicatorCtx.beginPath();
 
-    indicatorCtx.font = `${config.fontTemp.size}px ${config.fontTemp.name}`;
+    indicatorCtx.font = `${config.current.fontTemp.size}px ${config.current.fontTemp.name}`;
     indicatorCtx.fillStyle = "white";
     indicatorCtx.strokeStyle = "white";
-    indicatorCtx.arc(mousePosX, curveYPoint, 7, 0, Math.PI * 2);
+    indicatorCtx.arc(
+      mousePosX,
+      curveYPoint,
+      config.current.tempIndicatorDotSize,
+      0,
+      Math.PI * 2
+    );
 
     //draw helping line to determine the hovered hour
     indicatorCtx.moveTo(mousePosX, curveYPoint);
-    indicatorCtx.lineTo(mousePosX, canvasHeight - config.fontHour.size);
+    indicatorCtx.lineTo(mousePosX, canvasHeight - config.current.fontHour.size);
     indicatorCtx.lineWidth = 3;
 
     let textOffset = { x: 10, y: 30 };
@@ -131,7 +151,7 @@ export const Graph = ({ day = 0 }: { day?: number }) => {
     }
 
     if (mousePosX >= canvasWith * 0.98) {
-      textOffset = { ...textOffset, x: -50 };
+      textOffset = { ...textOffset, x: -80 };
     }
 
     indicatorCtx.fillText(
@@ -143,7 +163,28 @@ export const Graph = ({ day = 0 }: { day?: number }) => {
     indicatorCtx.fillText(
       `${fullHour}`,
       mousePosX + textOffset.x,
-      curveYPoint + textOffset.y + config.fontTemp.size
+      curveYPoint + textOffset.y + config.current.fontTemp.size
+    );
+
+    //draw image
+    const image = new Image();
+    image.src =
+      weatherIconsSVG[
+        closestPoint.icon &&
+        Object.keys(weatherIconsSVG).includes(closestPoint.icon)
+          ? closestPoint.icon
+          : "unknown"
+      ];
+    indicatorCtx.drawImage(
+      image,
+      mousePosX +
+        textOffset.x +
+        config.current.fontTemp.size * 3.5 -
+        image.width / 4,
+      curveYPoint +
+        textOffset.y -
+        image.height / 2 -
+        config.current.fontTemp.size / 3
     );
 
     indicatorCtx.fill();
@@ -174,24 +215,59 @@ export const Graph = ({ day = 0 }: { day?: number }) => {
       const scale = (temp - minTemp) / (maxTemp - minTemp);
       return (
         canvas.height -
-        config.canvasPadding -
-        scale * (canvas.height - config.canvasPadding * 2)
+        config.current.canvasPadding -
+        scale * (canvas.height - config.current.canvasPadding * 2)
       );
     };
     const getX = (i: number) =>
-      (i * (canvas.width - 2 * config.canvasPadding)) / (data.length - 1) +
-      config.canvasPadding;
+      (i * (canvas.width - 2 * config.current.canvasPadding)) /
+        (data.length - 1) +
+      config.current.canvasPadding;
 
-    const renderText = (i: number, yOffset: number) => {
-      ctx.font = `${config.fontTemp.size}px ${config.fontTemp.name}`;
-      ctx.fillStyle = config.fontTemp.color;
+    const renderText = (
+      i: number,
+      yOffset: number,
+      ctx: CanvasRenderingContext2D
+    ) => {
+      ctx.font = `${config.current.fontTemp.size}px ${config.current.fontTemp.name}`;
+      ctx.fillStyle = config.current.fontTemp.color;
 
-      return ctx.fillText(
-        `${data[i].temp.toString()}°`,
+      const [x, y] = [
         getX(i) -
-          (data[i].temp.toString().length * config.fontTemp.size) / 5 +
+          (data[i].temp.toString().length * config.current.fontTemp.size) / 5 +
           0.5,
-        getY(data[i].temp) - yOffset
+        getY(data[i].temp) - yOffset,
+      ];
+      ctx.fillText(`${data[i].temp.toString()}°`, x, y);
+
+      //draw weather icon on the left of temp. text
+      const image = new Image();
+      image.src =
+        weatherIconsSVG[
+          data[i].icon && Object.keys(weatherIconsSVG).includes(data[i].icon)
+            ? data[i].icon
+            : "unknown"
+        ];
+      ctx.drawImage(
+        image,
+        x -
+          config.current.tempDisplayWeatherIconSize -
+          config.current.weahterIconGap,
+        y - config.current.tempDisplayWeatherIconSize / 1.25,
+        config.current.tempDisplayWeatherIconSize,
+        config.current.tempDisplayWeatherIconSize
+      );
+    };
+
+    const renderHourText = (i: number, x0: number) => {
+      ctx.fillStyle = config.current.fontHour.color;
+      ctx.font = `${config.current.fontHour.size}px ${config.current.fontHour.name}`;
+      ctx.fillText(
+        data[i].datetime.substring(0, 2),
+        x0 -
+          config.current.fontHour.size / 2 -
+          (config.current.fontHour.size / 2) * 0.45,
+        canvas.height
       );
     };
 
@@ -209,56 +285,65 @@ export const Graph = ({ day = 0 }: { day?: number }) => {
         y3 = getY(data[i + 1].temp);
 
       ctx.lineTo(x3, y3);
-      if (i % 3 == 0) {
-        renderText(i, config.textBottomOffset);
-      }
-      ctx.fillStyle = config.fontHour.color;
-      ctx.font = `${config.fontHour.size}px ${config.fontHour.name}`;
-      ctx.fillText(
-        data[i].datetime.substring(0, 2),
-        x0 - config.fontHour.size / 2 - (config.fontHour.size / 2) * 0.45,
-        canvas.height
-      );
-      chartPoints.current.push({ x: x0, y: y0, temp: data[i].temp });
-    }
-    renderText(data.length - 1, config.textBottomOffset);
 
-    ctx.fillStyle = config.fontHour.color;
-    ctx.font = `${config.fontHour.size}px ${config.fontHour.name}`;
-    ctx.fillText(
-      data[data.length - 1].datetime.substring(0, 2),
-      getX(data.length - 1) -
-        config.fontHour.size / 2 -
-        (config.fontHour.size / 2) * 0.45,
-      canvas.height
-    );
+      //draw temperature indicators
+      if (
+        i % config.current.tempDisplayFreq == 0 ||
+        getDiviceType() == "mobile"
+      ) {
+        renderText(i, config.current.textBottomOffset, ctx);
+      }
+      renderHourText(i, x0);
+      chartPoints.current.push({
+        x: x0,
+        y: y0,
+        temp: data[i].temp,
+        icon: data[i].icon,
+      });
+    }
+    renderText(data.length - 1, config.current.textBottomOffset, ctx);
+    renderHourText(data.length - 1, getX(data.length - 1));
+
     chartPoints.current.push({
       x: getX(data.length - 1),
       y: getY(data[data.length - 1].temp),
       temp: data[data.length - 1].temp,
+      icon: data[data.length - 1].icon,
     });
 
     ctx.stroke();
     ctx.closePath();
+
+    const drawTempDot = (i: number, x: number, y: number) => {
+      if (
+        (getDiviceType() == "pc" && i % 3 == 0) ||
+        getDiviceType() == "mobile"
+      ) {
+        ctx.beginPath();
+        ctx.arc(x, y, config.current.tempChartDotSize, 0, 2 * Math.PI);
+        ctx.fillStyle = "#222222";
+        ctx.lineWidth = 4;
+        ctx.stroke();
+        ctx.fill();
+        ctx.closePath();
+      }
+    };
+
+    chartPoints.current.forEach((chartPoint, i) =>
+      drawTempDot(i, chartPoint.x, chartPoint.y)
+    );
   };
 
   useEffect(() => {
-    if (!isMobile) {
+    if (getDiviceType() == "pc") {
       addEventListener("mousemove", (e) => handleChartMouseMove(e.pageX));
-    } else {
-      addEventListener("touchmove", (e) =>
-        handleChartMouseMove(e.touches[0].pageX)
-      );
     }
 
-    addEventListener("resize", renderChart);
     renderChart();
     return () => {
-      !isMobile
-        ? removeEventListener("mousemove", (e) => handleChartMouseMove(e.pageX))
-        : removeEventListener("touchmove", (e) =>
-            handleChartMouseMove(e.touches[0].pageX)
-          );
+      getDiviceType() == "pc" &&
+        removeEventListener("mousemove", (e) => handleChartMouseMove(e.pageX));
+
       removeEventListener("resize", renderChart);
     };
   }, [weatherData, day]);
@@ -268,17 +353,7 @@ export const Graph = ({ day = 0 }: { day?: number }) => {
       className="hour-chart-container"
       onMouseEnter={() => setIndicatorVisiblility("visible")}
       onMouseLeave={() => setIndicatorVisiblility("hidden")}
-      onTouchStart={() => setIndicatorVisiblility("visible")}
-      onTouchEnd={() => setIndicatorVisiblility("hidden")}
     >
-      <div className="scroll-buttons-wrapper">
-        <button className={`scroll-left`}>
-          <img src={arrow_left} />
-        </button>
-        <button className={`scroll-right`}>
-          <img src={arrow_left} />
-        </button>
-      </div>
       <canvas className={`temp-indicator ${indicatorVisiblility}`}></canvas>
       <canvas className="hour-chart"></canvas>
     </div>

@@ -176,8 +176,15 @@
 
 @media screen and ( max-width: 500px )
     .dashboard-container
-        gap: 6vh
+        display: grid
+        gap: 0
+        grid-template-columns: 1fr
+        height: fit-content
+        padding-bottom: 2.5rem
+        justify-items: center     
         .weather-info-container
+            order: 1
+
             width: 90vw
             gap: clamp(.1rem, 2vw, 2rem)
             .weather-info-box
@@ -192,6 +199,9 @@
                         height: calc(clamp(.75rem, 1.5vw, 1.5rem) * 1.25)
                     letter-spacing: .1rem
         .weather-forcast-container
+            position: relative
+            bottom: auto !important
+            margin-top: 2   0rem
             padding-inline: 0
             width: 90vw
     

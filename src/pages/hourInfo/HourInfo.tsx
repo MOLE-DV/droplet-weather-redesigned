@@ -4,10 +4,12 @@ import { Day } from "./Day";
 import { Graph } from "./Graph";
 import "./hourInfo.sass";
 import InfoBox from "../../components/infobox/InfoBox";
+import useSettingsContext from "../../contexts/SettingsContext";
 
 export const HourInfo = () => {
   const { weatherData } = useWeatherData();
   const [selectedDay, setSelectedDay] = useState<number>(0);
+  const { unitType } = useSettingsContext();
 
   return (
     <div className="pages hour-info-container">
@@ -36,7 +38,7 @@ export const HourInfo = () => {
           content={
             weatherData ? weatherData.forecast[selectedDay].windspeed : 0
           }
-          unit="km/h"
+          unit={unitType == "metric" ? "km/h" : "mph"}
           iconName="wind"
         />
         <InfoBox

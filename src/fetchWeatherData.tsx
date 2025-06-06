@@ -1,5 +1,6 @@
 import axios from "axios";
 import { WeatherDataType } from "./types/weather_data";
+import { UnitType } from "./types/unitType";
 
 const api = axios.create({
   baseURL:
@@ -8,10 +9,10 @@ const api = axios.create({
 
 export const fetchWeatherData = async (
   location: string,
-  locationLabel: string
+  locationLabel: string,
+  unitType: UnitType
 ) => {
   const apiKey = import.meta.env.VITE_API_KEY;
-
   try {
     console.log(`Fetching weather data from API for location: ${location}.`);
 
@@ -19,7 +20,7 @@ export const fetchWeatherData = async (
       .get(
         `/${encodeURI(
           location
-        )}?unitGroup=metric&key=${apiKey}&contentType=json&iconSet=icons2&include=fcst%2Chours%2Ccurrent`
+        )}?unitGroup=${unitType}&key=${apiKey}&contentType=json&iconSet=icons2&include=fcst%2Chours%2Ccurrent`
       )
       .then((res: any) => {
         if (res == null) return null;

@@ -1,4 +1,5 @@
 import { WeatherIcon } from "../../assets/icons/weather/WeatherIcon";
+import useSettingsContext from "../../contexts/SettingsContext";
 
 type DayProps = {
   key?: number;
@@ -18,6 +19,7 @@ export const Day = ({
   onClick,
   selected = false,
 }: DayProps) => {
+  const { unitType } = useSettingsContext();
   return (
     <button
       className={`day-of-week ${selected ? "selected" : ""}`}
@@ -32,17 +34,22 @@ export const Day = ({
         {new Date(date as string).toLocaleDateString("en-US", {
           weekday: "long",
         })}
+        <span>{date}</span>
       </div>
       <div className="day-temperatures">
         <div className="day-temperature">
           <WeatherIcon name="clear-day" className="day-temperature-icon" />
           {Math.round(tempDay)}
-          <span className="day-temperature-unit">&deg;C</span>
+          <span className="day-temperature-unit">
+            {unitType == "us" ? <>&deg;F</> : <>&deg;C</>}
+          </span>
         </div>
         <div className="day-temperature">
           <WeatherIcon name="clear-night" className="day-temperature-icon" />
           {Math.round(tempNight)}
-          <span className="day-temperature-unit">&deg;C</span>
+          <span className="day-temperature-unit">
+            {unitType == "us" ? <>&deg;F</> : <>&deg;C</>}
+          </span>
         </div>
       </div>
     </button>
