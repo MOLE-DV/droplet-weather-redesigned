@@ -6,6 +6,7 @@ import { useWeatherData } from "../../contexts/WeatherDataContext";
 import { WeatherIcon } from "../../assets/icons/weather/WeatherIcon";
 import { LocationIcon } from "../../assets/icons/LocationIcon";
 import useSettingsContext from "../../contexts/SettingsContext";
+import { motion } from "framer-motion";
 
 export const Dashboard = () => {
   const date = useRef(new Date());
@@ -35,7 +36,12 @@ export const Dashboard = () => {
   }, []);
 
   return (
-    <div className="pages dashboard-container">
+    <motion.div
+      className="pages dashboard-container"
+      initial={{ transform: "translateY(-100%)", opacity: 0 }}
+      animate={{ transform: "translateY(0%)", opacity: 1 }}
+      exit={{ transform: "translateY(-100%)", opacity: 0 }}
+    >
       <div className="current-temperature-container">
         <div className="top">
           <h1 className="temperature">
@@ -89,6 +95,6 @@ export const Dashboard = () => {
         date={date.current}
         className="weather-forcast-container"
       />
-    </div>
+    </motion.div>
   );
 };

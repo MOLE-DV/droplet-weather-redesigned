@@ -5,14 +5,20 @@ import { Graph } from "./Graph";
 import "./hourInfo.sass";
 import InfoBox from "../../components/infobox/InfoBox";
 import useSettingsContext from "../../contexts/SettingsContext";
-
+import { motion } from "framer-motion";
 export const HourInfo = () => {
   const { weatherData } = useWeatherData();
   const [selectedDay, setSelectedDay] = useState<number>(0);
   const { unitType } = useSettingsContext();
+  console.log("Current location:", location.pathname);
 
   return (
-    <div className="pages hour-info-container">
+    <motion.div
+      className="pages hour-info-container"
+      initial={{ transform: "translateY(-100%)", opacity: 0 }}
+      animate={{ transform: "translateY(0%)", opacity: 1 }}
+      exit={{ transform: "translateY(-100%)", opacity: 0 }}
+    >
       <Graph day={selectedDay} />
       <div className="day-picker" tabIndex={-1}>
         {weatherData &&
@@ -62,6 +68,6 @@ export const HourInfo = () => {
           iconName="sun"
         />
       </div>
-    </div>
+    </motion.div>
   );
 };

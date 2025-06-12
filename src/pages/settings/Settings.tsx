@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ThermometerIcon } from "../../assets/icons/weather/ThermometerIcon";
 import useSettingsContext from "../../contexts/SettingsContext";
 import "./settings.sass";
@@ -7,6 +7,7 @@ import { useWeatherData } from "../../contexts/WeatherDataContext";
 import { fetchWeatherData } from "../../fetchWeatherData";
 import { findSimiliarCities } from "../../findSimiliarCities";
 import countries from "../../assets/json/countries.json";
+import { motion } from "framer-motion";
 
 export const Settings = () => {
   const { unitType, setUnitType, defaultLocation, setDefaultLocation } =
@@ -16,15 +17,29 @@ export const Settings = () => {
     { name: string; lat: string; lng: string; country: string }[] | null
   >(null);
   const defaultLocationInputRef = useRef(null);
-
-  console.log(unitType);
+  const [popup, setPopup] = useState({ visible: false, message: "" });
 
   const [unsavedSettings, setUnsavedSettings] = useState<{
     unitType: UnitType;
     defaultLocation: string;
   }>({ unitType, defaultLocation });
+
+  const displayPopup = (message: string) => {
+    setPopup({ visible: true, message: message });
+    setTimeout(() => {
+      setPopup((prev) => ({ ...prev, visible: false }));
+    }, 2000);
+  };
   return (
-    <div className="pages settings">
+    <motion.div
+      className="pages settings"
+      initial={{ transform: "translateY(-100%)", opacity: 0 }}
+      animate={{ transform: "translateY(0%)", opacity: 1 }}
+      exit={{ transform: "translateY(-100%)", opacity: 0 }}
+    >
+      <div className={`popup ${popup.visible ? "visible" : "hidden"}`}>
+        {popup.message}
+      </div>
       <div className="options">
         <label className="option select">
           <div className="title">
@@ -116,6 +131,9 @@ export const Settings = () => {
                 "weather_data",
                 JSON.stringify(fetchedWeatherData)
               );
+              displayPopup("Settings saved successfully!");
+            } else {
+              displayPopup("No changes to save.");
             }
 
             setDefaultLocation(unsavedSettings.defaultLocation);
@@ -125,6 +143,6 @@ export const Settings = () => {
           Save
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 };

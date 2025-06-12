@@ -65,14 +65,14 @@
         transform: translateX(125%)
         transition: .1s
         z-index: 999
-        right: .5rem
-        top: 4rem
+        right: calc(clamp(.1rem, 5vw, 5rem) / 2)
+        top: 3rem
         border-radius: 1rem
         padding-top: 2rem
         padding-bottom: 2rem
-        padding-inline: .5rem
         height: fit-content
-        width: 4rem
+        width: 3rem
+        box-shadow: 0 0 1rem rgba(0, 0, 0, .5)
         .menu-link
             height: 2rem
 
@@ -81,8 +81,11 @@
                 bottom: 0
 
     .dropdown-menu-button
+        box-shadow: 0 0 1rem rgba(0, 0, 0, .5)
+
+        z-index: 9999
         display: flex
-        position: absolute
+        position: fixed
         right: clamp(.1rem, 5vw, 5rem)
         top: calc(clamp(.5rem, 2.5vh, 5rem) + clamp(2.5rem, 5vh, 5rem) / 2 - 1.5rem / 2)
         flex-direction: column
